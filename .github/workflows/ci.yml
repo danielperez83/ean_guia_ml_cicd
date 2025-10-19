@@ -1,0 +1,29 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # CML para poder hacer "cml comment create report.md" (tu Makefile: eval)
+      - name: Install CML
+        run: npm i -g @dvcorg/cml
+
+      - name: Install deps
+        run: make install
+
+      - name: Format
+        run: make format
+
+      - name: Train
+        run: make train
+
+      - name: Evaluate and CML comment
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make eval
