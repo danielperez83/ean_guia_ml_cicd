@@ -1,5 +1,8 @@
 name: CI
 on: [push, pull_request]
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   ci:
     runs-on: ubuntu-latest
